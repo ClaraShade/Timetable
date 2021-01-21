@@ -1,8 +1,7 @@
 import sqlite3
 con = sqlite3.connect('harm.db')
 c = con.cursor()
-c.execute('''CREATE TABLE users
-(id int, username str, password str)''')
+# c.execute('''CREATE TABLE users (id int, username str, password str)''')
 your_username = input("Wpisz nazwę użytkownika: ")
 your_password = input("Wpisz hasło: ")
 # if your_username jest w bazie
