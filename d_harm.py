@@ -1,8 +1,8 @@
 import sqlite3
 con = sqlite3.connect('harmonogram.db')
 c = con.cursor()
-# c.execute('CREATE TABLE users (id int, username str, password str)')
-# c.execute('CREATE TABLE tasks (id int, fk int, time str, task str)')
+c.execute('CREATE TABLE users (id int, username str, password str)')
+c.execute('CREATE TABLE tasks (id int, fk int, time str, task str)')
 your_username = input("Wpisz nazwę użytkownika: ")
 your_password = input("Wpisz hasło: ")
 # if your_username jest w bazie
