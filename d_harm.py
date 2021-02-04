@@ -1,7 +1,8 @@
 import sqlite3
-con = sqlite3.connect('harm.db')
+con = sqlite3.connect('harmonogram.db')
 c = con.cursor()
-# c.execute('''CREATE TABLE users (id int, username str, password str)''')
+# c.execute('CREATE TABLE users (id int, username str, password str)')
+# c.execute('CREATE TABLE tasks (id int, fk int, time str, task str)')
 your_username = input("Wpisz nazwę użytkownika: ")
 your_password = input("Wpisz hasło: ")
 # if your_username jest w bazie
@@ -15,6 +16,6 @@ your_password = input("Wpisz hasło: ")
 # print("Ta nazwa jest zajęta. Wpisz inną nazwę")
 # your_password = input("Wpisz hasło: ")
 # our_password_check = input("Wpisz ponownie hasło: ")
-c.execute('INSERT INTO users(id, username, password) VALUES (?, ?, ?)', (1, str(your_username), str(your_password)))
+# c.execute('INSERT INTO users(id, username, password) VALUES (?, ?, ?)', (1, str(your_username), str(your_password)))
 con.commit()
 con.close()
