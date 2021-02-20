@@ -31,13 +31,14 @@ else:
     c.execute('SELECT password FROM users WHERE password = ?', p)
     found_password = c.fetchall()
     listed_p = [p]
-    print(listed_p)
-    print(found_password)
-    if found_password == listed_p:
-        print('Welcome to your harmonogram, '+your_username)
-    else:
+    while found_password != listed_p:
         print('Wrong password, type again')
-
+        your_password = input(str("Type your password: "))
+        p = (your_password,)
+        c.execute('SELECT password FROM users WHERE password = ?', p)
+        found_password = c.fetchall()
+        listed_p = [p]
+    print('Welcome to your harmonogram, ' + your_username)
 
 # def add(?,?,?):
 # input("Wpisz hasło: ")
