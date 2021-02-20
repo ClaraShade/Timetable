@@ -4,7 +4,7 @@ c = con.cursor()
 # create database if not present
 # c.execute('CREATE TABLE users (user_id int, user_name str, password str)')
 # c.execute('CREATE TABLE tasks (task_id int, user_id int, time str, task str)')
-your_username = input(str("Type your name: "))
+your_username = input(str("Hi, what is your name?: "))
 u = (your_username,)
 c.execute('SELECT user_name FROM users WHERE user_name = ?', u)
 found_user = c.fetchall()
@@ -15,8 +15,11 @@ if found_user == []:
     if add_user == 'y':
         your_username = input(str("Type your name: "),)
         your_password = input(str("Type your password: "),)
-        print(your_username,your_password)
-        c.execute('INSERT INTO users VALUES (?,?,?)', (2, your_username, your_password))
+        c.execute('Select user_id COUNT FROM users')
+        count_user = c.fetchall()
+        your_id = (len(count_user)) +1
+        c.execute('INSERT INTO users VALUES (?,?,?)', (your_id, your_username, your_password))
+        print('Congratulations, ' +your_username+ ', now you can create your harmonogram!')
     else:
         your_username = input(str("Type your name: "))
         u = (your_username,)
