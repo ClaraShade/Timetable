@@ -20,7 +20,7 @@ while found_user == []:
         your_id = (len(count_user)) +1
         c.execute('INSERT INTO users VALUES (?,?,?)', (your_id, your_username, your_password))
         print('Congratulations, ' +your_username+ ', now you can create your harmonogram!')
-        raw_input()
+        x = input()
     else:
         your_username = input(str("Type your name: "))
         u = (your_username,)
@@ -40,7 +40,7 @@ while found_password != listed_p:
     found_password = c.fetchall()
     listed_p = [p]
 print('Welcome to your harmonogram, ' + your_username)
-raw_input()
+x = input()
 # def add(?,?,?):
 # input("Wpisz hasło: ")
 # id = len()
