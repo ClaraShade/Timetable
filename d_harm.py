@@ -4,12 +4,41 @@ c = con.cursor()
 # create database if not present
 # c.execute('CREATE TABLE users (user_id int, user_name str, password str)')
 # c.execute('CREATE TABLE tasks (task_id int, user_id int, time str, task str)')
-your_username = input(str("Type your login: "))
+your_username = input(str("Type your name: "))
 u = (your_username,)
-c.execute('SELECT user_id FROM users WHERE user_name = ?', u)
+c.execute('SELECT user_name FROM users WHERE user_name = ?', u)
 found_user = c.fetchall()
 if found_user == []:
-    print('O, hello, first time?')
+    print('Hello there, first time? \n'
+    'Do you want to create new user?')
+    add_user = input(str('Type "y", if you want to create new user. Type "n", if you want to type another name '))
+    if add_user == 'y':
+        your_username = input(str("Type your name: "),)
+        your_password = input(str("Type your password: "),)
+        print(your_username,your_password)
+        c.execute('INSERT INTO users VALUES (?,?,?)', (2, your_username, your_password))
+    else:
+        your_username = input(str("Type your name: "))
+        u = (your_username,)
+        c.execute('SELECT user_name FROM users WHERE user_name = ?', u)
+        found_user = c.fetchall()
+        print(found_user)
+        #c.execute('INSERT INTO users(user_id, user_name, password) VALUES (?, ?, ?)', (increment, str(your_username), str(your_pa
+else:
+    print('Hello, '+ your_username)
+    your_password = input(str("Type your password: "))
+    p = (your_password,)
+    c.execute('SELECT password FROM users WHERE password = ?', p)
+    found_password = c.fetchall()
+    listed_p = [p]
+    print(listed_p)
+    print(found_password)
+    if found_password == listed_p:
+        print('Welcome to your harmonogram, '+your_username)
+    else:
+        print('Wrong password, type again')
+
+
 # def add(?,?,?):
 # input("Wpisz hasło: ")
 # id = len()
@@ -33,6 +62,6 @@ if found_user == []:
 # logowanie():
 #   x
 #   return fk
-#
+
 con.commit()
 con.close()
