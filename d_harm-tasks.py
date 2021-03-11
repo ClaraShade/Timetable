@@ -7,7 +7,8 @@ def get_user_id():
     p = ('Wilczyca',)
     c.execute('SELECT user_id FROM users WHERE user_name = ?', p)
     my_id = c.fetchall()
-    return my_id[0][0]
+    return my_id[0]
+
 my_id = get_user_id()
 
 def add():
@@ -15,11 +16,20 @@ def add():
     hour = str(input("Please type hour in 24-hour format: "))
     task = str(input("Please type task "))
     mydate = (day + ' ' + hour)
-    c.execute('INSERT INTO tasks VALUES (?,?,?,?)', (1, my_id, mydate, task))
+    newid = my_id[0]
+    c.execute('INSERT INTO tasks VALUES (?,?,?,?)', (1, newid, mydate, task))
 
-def del_task():
-    t = (1,)
-    c.execute('DELETE FROM tasks WHERE task_id = ?', a)
+add()
+
+c.execute('SELECT t.task FROM tasks t, users u WHERE t.user_id = u.user_id AND u.user_id = ?', my_id)
+whatifound = c.fetchall()
+print(whatifound)
+
+    #del_task()
+
+#def del_task():
+   #t = (1,)
+   #c.execute('DELETE FROM tasks WHERE task_id = ?', a)
 #del_task()
 
 #user_input = input("Type 'a' to add a new task. \n"
@@ -30,7 +40,6 @@ def del_task():
 
 
 #add()
-print(my_id)
 con.commit()
 con.close()
 
