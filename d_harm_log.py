@@ -41,6 +41,13 @@ while found_password != listed_p:
     found_password = c.fetchall()
     listed_p = [p]
 print('Welcome to your harmonogram, ' + your_username)
+def get_user_id():
+    u = (your_username,)
+    c.execute('SELECT user_id FROM users WHERE user_name = ?', u)
+    my_id = c.fetchall()
+    return my_id[0][0]
+my_id = get_user_id()
+
 x = input()
 con.commit()
 con.close()

@@ -7,9 +7,7 @@ def get_user_id():
     p = ('Wilczyca',)
     c.execute('SELECT user_id FROM users WHERE user_name = ?', p)
     my_id = c.fetchall()
-    return my_id[0]
-#wyjąć to z tupli!!
-
+    return my_id[0][0]
 my_id = get_user_id()
 
 def add():
