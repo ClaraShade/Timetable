@@ -57,6 +57,23 @@ def add_task():
     newid = myID[0]
     c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (newid, mydate, task))
 
+
+def del_task():
+    newid = myID[0]
+    task = str(input("Which task do you want to remove? "))
+    aram = (task,)
+    # c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.username = "Wilczyca" AND t.task =?', newtask)
+    c.execute("DELETE FROM tasks WHERE userID = 1 AND task =?", aram)
+    # del_task()
+
+del_task()
+#c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ?', myID)
+#whatifound = c.fetchall()
+#print(whatifound)
+
+
+# del_task()
+
 # add_task()
 
 con.commit()
