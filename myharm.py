@@ -23,8 +23,8 @@ while not found_user:
         u = (your_username,)
         c.execute('SELECT username FROM users WHERE username = ?', u)
         found_user = c.fetchall()
-        print('Hello, '+ your_username)
-        your_password = input(str("Type your password: "))
+print('Hello, '+ your_username)
+your_password = input(str("Type your password: "))
 p = (your_password,)
 c.execute('SELECT password FROM users WHERE password = ?', p)
 found_password = c.fetchall()
@@ -37,6 +37,27 @@ while found_password != listed_p:
     found_password = c.fetchall()
     listed_p = [p]
 print('Welcome to your timetable, ' + your_username)
-x = input()
+
+
+def get_user_id():
+    p = (your_username,)
+    c.execute('SELECT userID FROM users WHERE username = ?', p)
+    myid = c.fetchall()
+    return myid[0]
+
+
+myID = get_user_id()
+
+
+def add_task():
+    day = str(input("Please type day in format yyyy-mm-dd: "))
+    hour = str(input("Please type hour in 24-hour format: "))
+    task = str(input("Please type task "))
+    mydate = (day + ' ' + hour)
+    newid = myID[0]
+    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (newid, mydate, task))
+
+# add_task()
+
 con.commit()
 con.close()
