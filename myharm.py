@@ -1,4 +1,10 @@
 import sqlite3
+
+import datetime
+
+from datetime import datetime
+
+
 con = sqlite3.connect('mytimetable.db')
 c = con.cursor()
 # create database if not present
@@ -54,27 +60,67 @@ def add_task():
     hour = str(input("Please type hour in 24-hour format: "))
     task = str(input("Please type task "))
     mydate = (day + ' ' + hour)
-    newid = myID[0]
-    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (newid, mydate, task))
+    isdate = datetime.isoformat(mydate)
+    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (myID[0], isdate, task))
 
 
 def del_task():
-    newid = myID[0]
-    task = str(input("Which task do you want to remove? "))
-    aram = (task,)
-    # c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.username = "Wilczyca" AND t.task =?', newtask)
-    c.execute("DELETE FROM tasks WHERE userID = 1 AND task =?", aram)
-    # del_task()
-
-del_task()
-#c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ?', myID)
-#whatifound = c.fetchall()
-#print(whatifound)
-
+    toremove = str(input("Which task do you want to remove? "))
+    c.execute("DELETE FROM tasks WHERE userID = ? AND task =?", (myID[0], toremove))
 
 # del_task()
 
-# add_task()
+def show_tasks():
+    toshow = str(input("Type 'today' show today's task(s). \n"
+    "Type 'week' to show this week's task(s) \n"
+    "Type 'month' to show tasks(s) at given month \n"
+    "Type 'date' to show tasks(s) at given date \n"))
+    if toshow == 'today':
+        daytoday = str(datetime.date.today())
+        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+                  (myID[0], '%' + daytoday + '%'))
+        whatifound = c.fetchall()
+    elif toshow == 'week':
+        daytoday = (datetime.date.today())
+        print(datetime.date.isoweekday(daytoday))
+    elif toshow == 'month':
+        daytoday = datetime.strptime(now)
+        strptime
+        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+                  (myID[0], '%' + someday + '%'))
+        whatifound = c.fetchall()
+        print(daytoday)
+    elif toshow == 'date':
+        isomeday = 0
+        while isomeday == 0:
+            try:
+                someday = str(input('Type date: '))
+                isomeday = datetime.fromisoformat(someday)
+                startday = someday+' 00:00'
+                endday = someday+' 23:59'
+            except:
+                print('Ivalid date. Type again.')
+        print(startday)
+        print(endday)
+        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time > ? AND t.time < ?',
+                  (myID[0], startday, endday))
+        whatifound = c.fetchall()
+    print(whatifound)
+
+#add_task()
+
+show_tasks()
+
+#def find_task():
+#mytask = str(input('Type task name to find: '))
+#c.execute('SELECT * FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task = ?', (myID[0], mytask))
+#whatifound = c.fetchall()
+#print(whatifound)
+
+# del_task()
+
+
+
 
 con.commit()
 con.close()
