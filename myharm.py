@@ -55,6 +55,13 @@ def get_user_id():
 myID = get_user_id()
 
 
+def find_task():
+    mytask = str(input('Type task name to find: '))
+    c.execute('SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task = ?', (myID[0], mytask))
+    whatifound = c.fetchall()
+    print(whatifound)
+
+
 def add_task():
     day = str(input("Please type day in format yyyy-mm-dd: "))
     hour = str(input("Please type time in 24-hour format: "))
@@ -175,24 +182,42 @@ def EarliestTask():
     print(whatifound)
 
 
-LatestTask()
+def WhatToDo():
+    AskUser = str(input("Type 'find' to find a task(s);\n"
+                        "Type 'add' to add a new task;\n"
+                       "Type 'del' to delete task(s) \n"
+                       "Type 'show' to show tasks(s) of given year,month,week,or date\n"
+                       "Type 'switch' to switch two time of two tasks \n"
+                        "Type 'count' to show how many tasks of given name you have\n"
+                     "Type 'latest' to show the latest task\n"
+                     "Type 'earliest' to show the earliest task\n"))
+    return AskUser
+
+
+UserDecision = WhatToDo()
+
+try:
+    if UserDecision == 'find':
+        find_task()
+    if UserDecision == 'add':
+        add_task()
+    elif UserDecision == 'del':
+        del_task()
+    elif UserDecision == 'show':
+        show_tasks()
+    elif UserDecision == 'switch':
+        switch_tasks()
+    elif UserDecision == 'count':
+        CountTasks()
+    elif UserDecision == 'latest':
+        LatestTask()
 #EarliestTask()
 
+except:
+    print('Ivalid operation. Type again.')
 
 
-#CountTasks()
-#add_task()
-#del_task()
-#show_tasks()
-#switch_tasks()
 
-#def find_task():
-#mytask = str(input('Type task name to find: '))
-#c.execute('SELECT * FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task = ?', (myID[0], mytask))
-#whatifound = c.fetchall()
-#print(whatifound)
-
-# del_task()
 
 
 
