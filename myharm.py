@@ -149,6 +149,38 @@ def switch_tasks():
     c.execute("UPDATE tasks SET time = ? WHERE userID = ? AND time =? AND task =?", (time1, myID[0], time2, task2))
 
 
+def CountTasks():
+    task = str(input("Please type task "))
+    tasktuple = (task, )
+    c.execute(
+        'SELECT COUNT() FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task =?',
+        (myID[0], tasktuple[0]))
+    whatifound = c.fetchall()
+    print("You have "+str(whatifound[0][0])+" tasks named: "+task)
+
+
+def LatestTask():
+    c.execute(
+        'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND t.time = (SELECT MAX(time) FROM tasks) AND u.userID = ?',
+        myID)
+    whatifound = c.fetchall()
+    print(whatifound)
+
+
+def EarliestTask():
+    c.execute(
+        'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND t.time = (SELECT MIN(time) FROM tasks) AND u.userID = ?',
+        myID[0])
+    whatifound = c.fetchall()
+    print(whatifound)
+
+
+LatestTask()
+#EarliestTask()
+
+
+
+#CountTasks()
 #add_task()
 #del_task()
 #show_tasks()
