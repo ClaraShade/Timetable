@@ -16,20 +16,19 @@ u = (your_username,)
 c.execute('SELECT username FROM users WHERE username = ?', u)
 found_user = c.fetchall()
 while not found_user:
-    print('Hello there, first time? \n'
-    'Do you want to create new user?')
+    print('Hello there, first time?\nDo you want to create new user?')
     add_user = input(str('Type "y", if you want to create new user. Type "n", if you want to type another name '))
     if add_user == 'y':
-        your_password = input(str("Type your password: "),)
+        your_password = input(str("Type your password: "), )
         c.execute('INSERT INTO users (username, password) VALUES (?,?)', (your_username, your_password))
-        print('Congratulations, ' +your_username+ ', now you can create your timetable!')
+        print('Congratulations, ' + your_username + ', now you can create your timetable!')
         found_user = your_username
     else:
         your_username = input(str("Please, type your name: "))
         u = (your_username,)
         c.execute('SELECT username FROM users WHERE username = ?', u)
         found_user = c.fetchall()
-print('Hello, '+ your_username)
+print('Hello, ' + your_username)
 your_password = input(str("Type your password: "))
 p = (your_password,)
 c.execute('SELECT password FROM users WHERE password = ?', p)
@@ -57,7 +56,8 @@ myID = get_user_id()
 
 def find_task():
     mytask = str(input('Type task name to find: '))
-    c.execute('SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task = ?', (myID[0], mytask))
+    c.execute('SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task = ?',
+              (myID[0], mytask))
     whatifound = c.fetchall()
     print(whatifound)
 
@@ -77,14 +77,13 @@ def del_task():
 
 def show_tasks():
     # global whatifound if needed in future
-    toshow = str(input("Type 'today' show today's task(s). \n"
-    "Type 'week' to show this week's task(s) \n"
-    "Type 'month' to show tasks(s) at given month \n"
-    "Type 'date' to show tasks(s) at given date \n"))
+    toshow = str(input("Type 'today' show today's task(s);\nType 'week' to show this week's task(s);\n"
+                       "Type 'month' to show tasks(s) at given month\nType 'date' to show tasks(s) at given date: "))
     if toshow == 'today':
         daytoday = str(date.today())
-        c.execute('SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
-                  (myID[0], daytoday + '%'))
+        c.execute(
+            'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+            (myID[0], daytoday + '%'))
         whatifound = c.fetchall()
         if whatifound:
             print(whatifound)
@@ -94,14 +93,14 @@ def show_tasks():
     elif toshow == 'week':
         daytoday = date.today()
         weekofyear = daytoday.isocalendar()[1]
-        #weektoday = date.isoweekday(daytoday)
+        # weektoday = date.isoweekday(daytoday)
         print(weekofyear)
         c.execute(
             'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND datetime.fromisoformat(t.time) = ?',
             (myID[0], 15))
         whatifound = c.fetchall()
         if whatifound:
-            print(whatifound[0][0] + ': ' +whatifound[0][1])
+            print(whatifound[0][0] + ': ' + whatifound[0][1])
         else:
             print("You have no tasks this week")
     elif toshow == 'month':
@@ -135,9 +134,10 @@ def show_tasks():
             (myID[0], someday + '%'))
         whatifound = c.fetchall()
         if whatifound:
-            print(whatifound[0][0] + ': ' +whatifound[0][1])
+            print(whatifound[0][0] + ': ' + whatifound[0][1])
         else:
             print("You have no tasks at this date")
+
 
 def switch_tasks():
     day1 = str(input("Please type the date of the first task in format yyyy-mm-dd: "))
@@ -156,17 +156,17 @@ def switch_tasks():
     c.execute("UPDATE tasks SET time = ? WHERE userID = ? AND time =? AND task =?", (time1, myID[0], time2, task2))
 
 
-def CountTasks():
+def count_tasks():
     task = str(input("Please type task "))
-    tasktuple = (task, )
+    tasktuple = (task,)
     c.execute(
         'SELECT COUNT() FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.task =?',
         (myID[0], tasktuple[0]))
     whatifound = c.fetchall()
-    print("You have "+str(whatifound[0][0])+" tasks named: "+task)
+    print("You have " + str(whatifound[0][0]) + " tasks named: " + task)
 
 
-def LatestTask():
+def latest_task():
     c.execute(
         'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND t.time = (SELECT MAX(time) FROM tasks) AND u.userID = ?',
         myID)
@@ -174,7 +174,7 @@ def LatestTask():
     print(whatifound)
 
 
-def EarliestTask():
+def earliest_task():
     c.execute(
         'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND t.time = (SELECT MIN(time) FROM tasks) AND u.userID = ?',
         myID[0])
@@ -182,45 +182,37 @@ def EarliestTask():
     print(whatifound)
 
 
-def WhatToDo():
-    AskUser = str(input("Type 'find' to find a task(s);\n"
-                        "Type 'add' to add a new task;\n"
-                       "Type 'del' to delete task(s) \n"
-                       "Type 'show' to show tasks(s) of given year,month,week,or date\n"
-                       "Type 'switch' to switch two time of two tasks \n"
-                        "Type 'count' to show how many tasks of given name you have\n"
-                     "Type 'latest' to show the latest task\n"
-                     "Type 'earliest' to show the earliest task\n"))
-    return AskUser
+def what_to_do():
+    ask_user = str(input("Type 'find' to find a task(s);\nType 'add' to add a new task;\n"
+                         "Type 'del' to delete task(s);\nType 'show' to show tasks(s) of given year,month,week,or date\n"
+                         "Type 'switch' to switch two time of two tasks \n"
+                         "Type 'count' to show how many tasks of given name you have\n"
+                         "Type 'latest' to show the latest task\n"
+                         "Type 'earliest' to show the earliest task\n"))
+    return ask_user
 
 
-UserDecision = WhatToDo()
-
-try:
-    if UserDecision == 'find':
-        find_task()
-    if UserDecision == 'add':
-        add_task()
-    elif UserDecision == 'del':
-        del_task()
-    elif UserDecision == 'show':
-        show_tasks()
-    elif UserDecision == 'switch':
-        switch_tasks()
-    elif UserDecision == 'count':
-        CountTasks()
-    elif UserDecision == 'latest':
-        LatestTask()
-#EarliestTask()
-
-except:
-    print('Ivalid operation. Type again.')
+UserDecision = what_to_do()
 
 
-
-
-
-
+if UserDecision == 'find':
+    find_task()
+elif UserDecision == 'add':
+    add_task()
+elif UserDecision == 'del':
+    del_task()
+elif UserDecision == 'show':
+    show_tasks()
+elif UserDecision == 'switch':
+    switch_tasks()
+elif UserDecision == 'count':
+    count_tasks()
+elif UserDecision == 'latest':
+    latest_task()
+elif UserDecision == 'earliest':
+    earliest_task()
+else:
+    print('Ivalid operation')
 
 con.commit()
 con.close()
