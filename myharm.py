@@ -3,7 +3,7 @@ import sqlite3
 import datetime
 
 from datetime import datetime
-
+from datetime import date
 
 con = sqlite3.connect('mytimetable.db')
 c = con.cursor()
@@ -60,8 +60,7 @@ def add_task():
     hour = str(input("Please type hour in 24-hour format: "))
     task = str(input("Please type task "))
     mydate = (day + ' ' + hour)
-    isdate = datetime.isoformat(mydate)
-    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (myID[0], isdate, task))
+    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (myID[0], mydate, task))
 
 
 def del_task():
@@ -71,43 +70,55 @@ def del_task():
 # del_task()
 
 def show_tasks():
+    # global whatifound if needed in future
     toshow = str(input("Type 'today' show today's task(s). \n"
     "Type 'week' to show this week's task(s) \n"
     "Type 'month' to show tasks(s) at given month \n"
     "Type 'date' to show tasks(s) at given date \n"))
     if toshow == 'today':
-        daytoday = str(datetime.date.today())
-        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
-                  (myID[0], '%' + daytoday + '%'))
+        daytoday = str(date.today())
+        c.execute('SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+                  (myID[0], daytoday + '%'))
         whatifound = c.fetchall()
+        print(whatifound)
     elif toshow == 'week':
-        daytoday = (datetime.date.today())
+        daytoday = datetime.date.today()
         print(datetime.date.isoweekday(daytoday))
     elif toshow == 'month':
-        daytoday = datetime.strptime(now)
-        strptime
-        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
-                  (myID[0], '%' + someday + '%'))
+        somemonth = int(input('Type month 1-12: '))
+        daytoday = date.today()
+        yeartoday = daytoday.year
+        print(yeartoday)
+        # >>> datetime(2019, 5, 18, 15, 17, 8, 132263).isoformat()
+        # '2019-05-18T15:17:08.132263'
+        # tu się nie baw i lepiej datetimem chyba
+        while somemonth > 12:
+            somemonth = int(input('Type month 1-12: '))
+        month = str(yeartoday) + '-' + str(somemonth) + '-'
+        print(month)
+        c.execute(
+            'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+            (myID[0], month + '%' + '%'))
         whatifound = c.fetchall()
-        print(daytoday)
+        print(whatifound)
     elif toshow == 'date':
         isomeday = 0
         while isomeday == 0:
             try:
                 someday = str(input('Type date: '))
                 isomeday = datetime.fromisoformat(someday)
-                startday = someday+' 00:00'
-                endday = someday+' 23:59'
             except:
                 print('Ivalid date. Type again.')
-        print(startday)
-        print(endday)
-        c.execute('SELECT t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time > ? AND t.time < ?',
-                  (myID[0], startday, endday))
+        c.execute(
+            'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
+            (myID[0], someday + '%'))
         whatifound = c.fetchall()
-    print(whatifound)
+        if whatifound:
+            print(whatifound[0][0] + ': ' +whatifound[0][1])
+        else:
+            print("No tasks at this date")
 
-#add_task()
+add_task()
 
 show_tasks()
 
