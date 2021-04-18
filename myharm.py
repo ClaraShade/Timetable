@@ -88,19 +88,23 @@ def show_tasks():
         somemonth = int(input('Type month 1-12: '))
         daytoday = date.today()
         yeartoday = daytoday.year
-        print(yeartoday)
         # >>> datetime(2019, 5, 18, 15, 17, 8, 132263).isoformat()
         # '2019-05-18T15:17:08.132263'
         # tu się nie baw i lepiej datetimem chyba
         while somemonth > 12:
             somemonth = int(input('Type month 1-12: '))
-        month = str(yeartoday) + '-' + str(somemonth) + '-'
-        print(month)
+        if somemonth > 9:
+            month = str(yeartoday) + '-' + str(somemonth) + '-'
+        else:
+            month = str(yeartoday) + '-0' + str(somemonth) + '-'
         c.execute(
             'SELECT t.time, t.task FROM tasks t, users u WHERE t.userID = u.userID AND u.userID = ? AND t.time like ?',
             (myID[0], month + '%' + '%'))
         whatifound = c.fetchall()
-        print(whatifound)
+        if whatifound:
+            print(whatifound)
+        else:
+            print("You have no tasks this month")
     elif toshow == 'date':
         isomeday = 0
         while isomeday == 0:
@@ -116,9 +120,9 @@ def show_tasks():
         if whatifound:
             print(whatifound[0][0] + ': ' +whatifound[0][1])
         else:
-            print("No tasks at this date")
+            print("You have no tasks at this date")
 
-add_task()
+#add_task()
 
 show_tasks()
 
