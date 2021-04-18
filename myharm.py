@@ -152,7 +152,7 @@ def switch_tasks():
 #add_task()
 #del_task()
 #show_tasks()
-switch_tasks()
+#switch_tasks()
 
 #def find_task():
 #mytask = str(input('Type task name to find: '))
