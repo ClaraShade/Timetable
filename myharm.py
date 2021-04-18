@@ -136,17 +136,17 @@ def switch_tasks():
     day1 = str(input("Please type the date of the first task in format yyyy-mm-dd: "))
     hour1 = str(input("Please type the time of the first task in 24-hour format: "))
     task1 = str(input("Please type the name of the first task "))
-    firsttask = (myID[0], (day1 + ' ' + hour1), task1)
+    time1 = day1 + ' ' + hour1
+    firsttask = (myID[0], time1, task1)
     print(firsttask)
-    c.execute("DELETE FROM tasks WHERE userID = ? AND time =? AND task =?", (myID[0], (day1 + ' ' + hour1), task1))
     day2 = str(input("Please type the date of the second task in format yyyy-mm-dd: "))
     hour2 = str(input("Please type the time of the second task in 24-hour format: "))
     task2 = str(input("Please type the name of the second task "))
-    secondtask = (myID[0], (day2 + ' ' + hour2), task2)
+    time2 = day2 + ' ' + hour2
+    secondtask = (myID[0], time2, task2)
     print(secondtask)
-    c.execute("DELETE FROM tasks WHERE userID = ? AND time =? AND task =?", (myID[0], (day2 + ' ' + hour2), task2))
-    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (myID[0], (day1 + ' ' + hour1), task2))
-    c.execute('INSERT INTO tasks (userID, time, task) VALUES (?,?,?)', (myID[0], (day2 + ' ' + hour2), task1))
+    c.execute("UPDATE tasks SET time = ? WHERE userID = ? AND time =? AND task =?", (time2, myID[0], time1, task1))
+    c.execute("UPDATE tasks SET time = ? WHERE userID = ? AND time =? AND task =?", (time1, myID[0], time2, task2))
 
 
 #add_task()
