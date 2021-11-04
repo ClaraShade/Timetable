@@ -38,7 +38,7 @@ while not found_user:
             c.execute('SELECT password FROM users WHERE password = ?', p)
             found_password = c.fetchall()
             listed_p = [p]
-print('Welcome to your harmonogram, ' + your_username)
+print('Welcome to your timetable, ' + your_username)
 x = input()
 con.commit()
 con.close()
